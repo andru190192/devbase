@@ -1,0 +1,23 @@
+import {Box, Button} from 'native-base';
+import React from 'react';
+
+export interface UserListProps {
+  users: {id: number; name: string}[];
+  onHandlerUser: (name: string) => string;
+}
+
+function UserList({users, onHandlerUser}: UserListProps): JSX.Element {
+  return (
+    <Box alignItems="center" mt={5}>
+      {users.map(user => {
+        return (
+          <Button my={2} onPress={() => onHandlerUser(user.name)}>
+            {user.name}
+          </Button>
+        );
+      })}
+    </Box>
+  );
+}
+
+export default UserList;
