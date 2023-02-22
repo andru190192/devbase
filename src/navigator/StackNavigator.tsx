@@ -2,16 +2,33 @@ import React from 'react';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import {Home} from '../screens/Home';
-import {Person} from '../screens/Person';
+import {Home as HomeScreen} from '../screens/Home';
+import {Person as PersonScreen} from '../screens/Person';
 
-const Stack = createNativeStackNavigator();
+export enum Screens {
+  Home = 'Home',
+  Person = 'Person',
+}
+
+export type RootStackParams = {
+  Home: undefined;
+  Person: {userId: string};
+};
+
+const Stack = createNativeStackNavigator<RootStackParams>();
 
 export const StackNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Person" component={Person} />
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: 'papayawhip',
+        },
+        presentation: 'card',
+      }}>
+      <Stack.Screen name={Screens.Home} component={HomeScreen} />
+      <Stack.Screen name={Screens.Person} component={PersonScreen} />
     </Stack.Navigator>
   );
 };

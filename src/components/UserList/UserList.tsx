@@ -1,5 +1,5 @@
-import {Box, Button} from 'native-base';
 import React from 'react';
+import {Box, Button} from 'native-base';
 
 export interface UserListProps {
   users: {id: number; name: string}[];
@@ -11,7 +11,7 @@ function UserList({users, onHandlerUser}: UserListProps): JSX.Element {
     <Box alignItems="center" mt={5}>
       {users.map(user => {
         return (
-          <Button my={2} onPress={() => onHandlerUser(user.name)}>
+          <Button key={user.id} my={2} onPress={() => onHandlerUser(user.name)}>
             {user.name}
           </Button>
         );

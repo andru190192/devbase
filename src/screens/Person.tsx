@@ -1,44 +1,39 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import axios from 'axios';
 import {Avatar, Box, HStack, Text, VStack} from 'native-base';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
+import {RootStackParams, Screens} from '../navigator/StackNavigator';
+import useUser from '../hooks/useUser';
 
-interface Props extends NativeStackScreenProps<any, any> {}
+interface Props
+  extends NativeStackScreenProps<RootStackParams, Screens.Person> {}
 
 export const Person = ({route}: Props) => {
-  const [user, setUser] = useState<{
-    name: string;
-    avatar_url: string;
-    location: string;
-  }>();
   const {userId} = route.params;
 
-  useEffect(() => {
-    getUserData();
-  }, []);
+  const {user, isLoading, isError} = useUser(userId);
 
-  const getUserData = async () => {
-    const {data} = await axios.get(`https://api.github.com/users/${userId}`);
-    setUser(data);
-  };
+  if (isError) {
+    return <Text>Ocurrio un error</Text>;
+  }
+
+  if (isLoading) {
+    return <Text>loading...</Text>;
+  }
 
   return (
     <Box>
-      {user && (
-        <HStack space={2}>
-          <Avatar
-            bg="green.500"
-            source={{
-              uri: `${user.avatar_url}`,
-            }}
-          />
-          <VStack>
-            <Text>{user.name}</Text>
-            <Text>{user.location}</Text>
-          </VStack>
-        </HStack>
-      )}
+      <HStack space="sm" padding={3}>
+        <Avatar
+          bg="green.500"
+          source={{
+            uri: `${user.avatar_url}`,
+          }}
+        />
+        <VStack>
+          <Text>{user.name}</Text>
+          <Text>{user.location}</Text>
+        </VStack>
+      </HStack>
     </Box>
   );
 };
